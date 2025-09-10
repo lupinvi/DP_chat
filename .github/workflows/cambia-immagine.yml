@@ -2,8 +2,8 @@ name: Cambia immagine
 
 on:
   schedule:
-    - cron: '0 * * * *'   # gira ogni ora
-  workflow_dispatch:       # puoi avviarlo anche a mano da GitHub
+    - cron: '0 * * * *'   # ogni ora (UTC)
+  workflow_dispatch:       # esecuzione manuale
 
 jobs:
   update-image:
@@ -13,15 +13,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Scegli immagine in base all'orario
+      - name: Scegli immagine in base all'orario italiano
         run: |
+          # ora UTC
           HOUR=$(date +'%H')
-          if [ $HOUR -ge 9 -a $HOUR -lt 12 ] || [ $HOUR -ge 14 -a $HOUR -lt 17 ]; then
-            echo "Uso Verde.png"
+          # spostiamo +2 ore per ora italiana (estate)
+          ITA_HOUR=$((HOUR+2))
+          if [ $ITA_HOUR -ge 24 ]; then
+            ITA_HOUR=$((ITA_HOUR-24))
+          fi
+
+          echo "Ora italiana: $ITA_HOUR"
+
+          if ([ $ITA_HOUR -ge 9 ] && [ $ITA_HOUR -lt 12 ]) || ([ $ITA_HOUR -ge 14 ] && [ $ITA_HOUR -lt 17 ]); then
             cp Verde.png Immagine.png
+            echo "Uso Verde.png"
           else
-            echo "Uso rosso.png"
             cp Rosso.png Immagine.png
+            echo "Uso Rosso.png"
           fi
 
       - name: Commit & Push
@@ -31,5 +40,3 @@ jobs:
           git add Immagine.png
           git diff --quiet --cached || git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          
-
