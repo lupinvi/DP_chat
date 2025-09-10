@@ -15,6 +15,7 @@ jobs:
       - name: Scegli immagine in base all'orario
         run: |
           HOUR=$(date +'%H')
+          echo $HOUR
           if [ $HOUR -ge 9 -a $HOUR -lt 12 ] || [ $HOUR -ge 14 -a $HOUR -lt 17 ]; then
             cp Verde.png Immagine.png
             echo "Uso Verde.png"
