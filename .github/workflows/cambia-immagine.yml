@@ -26,8 +26,8 @@ jobs:
 
   - name: Commit & Push
     run: |
-      git config user.name "github-actions"
-      git config user.email "actions@github.com"
-      git add immagine.png
-      git diff --quiet --cached || git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
-      git push
+    git config user.name "github-actions"
+    git config user.email "actions@github.com"
+    git add immagine.png
+    git diff --quiet --cached || git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
+    git push
