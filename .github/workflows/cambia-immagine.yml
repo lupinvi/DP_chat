@@ -16,15 +16,15 @@ jobs:
         run: |
           HOUR=$(date +'%H')
           if [ $HOUR -ge 9 -a $HOUR -lt 12 ] || [ $HOUR -ge 14 -a $HOUR -lt 17 ]; then
-            cp verde.png immagine.png
+            cp Verde.png Immagine.png
           else
-            cp rosso.png immagine.png
+            cp Rosso.png Immagine.png
           fi
 
       - name: Commit & Push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add immagine.png
+          git add Immagine.png
           git commit -m "Update immagine alle $(date)"
           git push
