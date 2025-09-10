@@ -9,16 +9,18 @@ jobs:
   update-image:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Scegli immagine
+      - name: Scegli immagine in base all'orario
         run: |
           HOUR=$(date +'%H')
           if [ $HOUR -ge 9 -a $HOUR -lt 12 ] || [ $HOUR -ge 14 -a $HOUR -lt 17 ]; then
             cp Verde.png Immagine.png
+            echo "Uso Verde.png"
           else
             cp Rosso.png Immagine.png
+            echo "Uso Rosso.png"
           fi
 
       - name: Commit & Push
