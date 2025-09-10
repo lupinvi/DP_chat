@@ -2,8 +2,8 @@ name: Cambia immagine
 
 on:
   schedule:
-    - cron: '0 * * * *'   # ogni ora (UTC)
-  workflow_dispatch:       # esecuzione manuale
+    - cron: '0 * * * *'   # ogni ora
+  workflow_dispatch:
 
 jobs:
   update-image:
@@ -15,17 +15,12 @@ jobs:
 
       - name: Scegli immagine in base all'orario italiano
         run: |
-          # ora UTC
-          HOUR=$(date +'%H')
-          # spostiamo +2 ore per ora italiana (estate)
-          ITA_HOUR=$((HOUR+2))
-          if [ $ITA_HOUR -ge 24 ]; then
-            ITA_HOUR=$((ITA_HOUR-24))
-          fi
+          # otteniamo l'ora locale italiana usando Europe/Rome
+          HOUR=$(TZ="Europe/Rome" date +'%H')
 
-          echo "Ora italiana: $ITA_HOUR"
+          echo "Ora italiana: $HOUR"
 
-          if ([ $ITA_HOUR -ge 9 ] && [ $ITA_HOUR -lt 12 ]) || ([ $ITA_HOUR -ge 14 ] && [ $ITA_HOUR -lt 17 ]); then
+          if ([ $HOUR -ge 9 ] && [ $HOUR -lt 12 ]) || ([ $HOUR -ge 14 ] && [ $HOUR -lt 17 ]); then
             cp Verde.png Immagine.png
             echo "Uso Verde.png"
           else
@@ -37,6 +32,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add Immagine.png
-          git diff --quiet --cached || git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
+          git add immagine.png
+          git diff --quiet --cached || git commit -m "Aggiornata immagine alle $(TZ="Europe/Rome" date '+%H:%M')"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
