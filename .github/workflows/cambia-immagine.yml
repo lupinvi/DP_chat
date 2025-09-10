@@ -24,12 +24,12 @@ jobs:
             cp Rosso.png Immagine.png
           fi
 
-    - name: Commit & Push
-      run: |
-        git config user.name "github-actions"
-        git config user.email "actions@github.com"
-        git add Immagine.png
-        git diff --quiet --cached || git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add Immagine.png
+          git diff --quiet --cached || git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           
 
