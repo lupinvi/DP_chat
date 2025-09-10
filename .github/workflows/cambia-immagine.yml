@@ -29,5 +29,6 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add Immagine.png
-          git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
-          git push
+          git diff --quiet --cached || git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
