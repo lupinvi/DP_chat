@@ -1,0 +1,33 @@
+name: Cambia immagine
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # gira ogni ora
+  workflow_dispatch:       # puoi avviarlo anche a mano da GitHub
+
+jobs:
+  update-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Scegli immagine in base all'orario
+        run: |
+          HOUR=$(date +'%H')
+          if [ $HOUR -ge 9 -a $HOUR -lt 12 ] || [ $HOUR -ge 14 -a $HOUR -lt 17 ]; then
+            echo "Uso Verde.png"
+            cp Verde.png Immagine.png
+          else
+            echo "Uso rosso.png"
+            cp Rosso.png Immagine.png
+          fi
+
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add Immagine.png
+          git commit -m "Aggiornata immagine alle $(date '+%H:%M')"
+          git push
