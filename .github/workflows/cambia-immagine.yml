@@ -17,10 +17,14 @@ jobs:
         run: |
           # otteniamo l'ora locale italiana usando Europe/Rome
           HOUR=$(TZ="Europe/Rome" date +'%H')
+          MINUTE=$(date +'%M')
+          
+          echo "Ora italiana: $HOUR $MINUTE"
 
-          echo "Ora italiana: $HOUR"
-
-          if ([ $HOUR -ge 9 ] && [ $HOUR -lt 12 ]) || ([ $HOUR -ge 14 ] && [ $HOUR -lt 17 ]); then
+          if { [ "$HOUR" -eq 8 ] && [ "$MINUTE" -eq 45 ]; } || \
+             { [ "$HOUR" -eq 11 ] && [ "$MINUTE" -eq 45 ]; } || \
+             { [ "$HOUR" -eq 13 ] && [ "$MINUTE" -eq 45 ]; } || \
+              { [ "$HOUR" -eq 16 ] && [ "$MINUTE" -eq 45 ]; }; then          
             cp Verde.png Immagine.png
             echo "Uso Verde.png"
           else
