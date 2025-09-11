@@ -21,10 +21,7 @@ jobs:
           
           echo "Ora italiana: $HOUR $MINUTE"
 
-          if { [ "$HOUR" -eq 8 ] && [ "$MINUTE" -eq 45 ]; } || \
-             { [ "$HOUR" -eq 11 ] && [ "$MINUTE" -eq 45 ]; } || \
-             { [ "$HOUR" -eq 13 ] && [ "$MINUTE" -eq 45 ]; } || \
-              { [ "$HOUR" -eq 16 ] && [ "$MINUTE" -eq 45 ]; }; then          
+          if [ $HOUR -ge 9 -a $HOUR -lt 12 ] || [ $HOUR -ge 14 -a $HOUR -lt 17 ]; then          
             cp Verde.png Immagine.png
             echo "Uso Verde.png"
           else
