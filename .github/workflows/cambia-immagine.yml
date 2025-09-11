@@ -2,7 +2,7 @@ name: Cambia immagine
 
 on:
   schedule:
-    - cron: '0 * * * *'   # ogni ora
+    - cron: '45 * * * *'   # ogni ora
   workflow_dispatch:
 
 jobs:
